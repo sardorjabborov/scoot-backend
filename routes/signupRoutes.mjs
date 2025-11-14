@@ -6,15 +6,16 @@ const router = express.Router();
 // Ro'yxatdan o'tish
 router.post("/", async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, phone } = req.body;
 
-    // Email oldin ishlatilganini tekshirish
-    const existingUser = await Signup.findOne({ email });
+    // Telefon oldin ishlatilganini tekshirish
+    const existingUser = await Signup.findOne({ phone });
     if (existingUser) {
-      return res.status(400).json({ error: "Email allaqachon mavjud" });
+      return res.status(400).json({ error: "Telefon allaqachon mavjud" });
     }
 
-    const newUser = await Signup.create({ name, email, password });
+    // Yangi foydalanuvchi yaratish
+    const newUser = await Signup.create({ name, phone });
     res.status(201).json({ message: "Ro'yxatdan o'tish muvaffaqiyatli", user: newUser });
   } catch (err) {
     res.status(500).json({ error: err.message });
